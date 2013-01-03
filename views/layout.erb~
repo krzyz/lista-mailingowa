@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <title>Lista mailingowa NKF</title>
+  </head>
+  <body>
+    <header>
+    </header>
+    <section>
+    <%= yield %>    </section>
+    <footer>
+    </footer>
+  </body>
+</html>
