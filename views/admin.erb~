@@ -1,0 +1,6 @@
+<form method="post">
+  <label>Nazwa:</label>
+  <input type="text" id="name_form" name="login[name]" required>
+  <label>Hasło:</label>
+  <input type="text" id="password_form" name="login[password]" required>
+</form>
