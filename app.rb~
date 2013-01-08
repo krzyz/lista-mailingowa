@@ -46,6 +46,9 @@ class Index < Sinatra::Base
   end
 
   DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/db/mailing_list.db")
+  configure :test do
+    DataMapper.setup(:default, "sqlite::memory:")
+  end
 
   class UserEmail
     include DataMapper::Resource

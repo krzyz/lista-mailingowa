@@ -3,10 +3,14 @@ require File.join(File.dirname(__FILE__), '..', 'app.rb')
 require 'sinatra'
 require 'rack/test'
 require 'rspec'
-require 'capybara'
+require 'webrat'
 
 set :environment, :test
 set :run, false
+
+Webrat.configure do |config|
+  config.mode = :rack
+end
 
 RSpec.configure do |config|
   config.before(:each) { DataMapper.auto_migrate! }
