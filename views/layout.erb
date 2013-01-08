@@ -7,10 +7,19 @@
   </head>
   <body>
     <header>
-    <h1>Lista mailingowa Naukowego Koła Fizyków</h1>
+      <h1>Lista mailingowa Naukowego Koła Fizyków</h1>
+      <nav>
+      </nav>
     </header>
     <section>
-    <%= yield %>    </section>
+      <% if flash[:error] %>
+        <p><%= flash[:error] %></p>
+      <% end %>
+      <% if flash[:notice] %>
+        <p><%= flash[:notice] %></p>
+      <% end %>
+
+      <%= yield %>    </section>
     <footer>
     </footer>
   </body>
