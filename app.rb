@@ -85,19 +85,19 @@ class Index < Sinatra::Base
   end
 
   get '/admin' do
-    # redirect '/login' unless login?
+    redirect '/login' unless login?
     erb :admin, locals: { users: UserEmail.all }
   end
 
   post '/admin' do
-    # redirect '/login' unless login?
+    redirect '/login' unless login?
     success = new_password( params[:password] )
     if success == true
       flash[:notify] = 'Zmiana hasła zakończona sukcesem.'
     else
       flash[:error] = 'Nie udało się zmienić hasła.'
     end
-    redirect '/admin'
+    redirect back
   end
 
   get '/login' do
@@ -109,9 +109,9 @@ class Index < Sinatra::Base
     if params[:name] == 'admin' && 
         user[:password_hash] == BCrypt::Engine.hash_secret(params[:password], user[:salt])
       session[:username] = "admin"
-      redirect '/'
+      redirect '/admin'
     end
-    redirect '/login'
+    redirect back
   end
 
   get '/logout' do
