@@ -8,6 +8,8 @@ require 'capybara'
 set :environment, :test
 set :run, false
 
+ENV['RACK_ENV'] = 'test'
+
 RSpec.configure do |config|
   config.before(:each) { DataMapper.auto_migrate! }
 end

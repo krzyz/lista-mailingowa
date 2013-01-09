@@ -1,7 +1,0 @@
-h1 {
-  font: {
-    weight: bold;
-    color: white;
-    size: 1em;
-  }
-}
