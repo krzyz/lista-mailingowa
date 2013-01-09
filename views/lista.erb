@@ -1,0 +1,16 @@
+<p>
+<table border="1">
+  <tr>
+    <th>Nr</th>
+    <th>E-mail</th>
+    <th>Zapisany:</th>
+  </tr>
+  <% users.each do |user| %>
+  <tr>
+    <td><%= user[:id] %></td>
+    <td><%= user[:email] %></td>
+    <td><%= user[:created_at].to_s %></td>
+  </tr>
+  <% end %>
+</table>
+</p>

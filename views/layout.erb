@@ -8,8 +8,16 @@
   <body>
     <header>
       <h1>Lista mailingowa Naukowego Koła Fizyków</h1>
-      <nav>
-      </nav>
+      <% if session[:username] == 'admin' %>
+        <nav>
+          <ul>
+            <li><a href="/admin">Ślij mejl!</a></li>
+            <li><a href="/admin/haslo">Zmień hasło!!</a></li>
+            <li><a href="/admin/lista">Lista zapisanych!!!</a></li>
+          </ul>
+        </nav>
+        Jesteś zalogowany jako admin. <a href="/logout">Wyloguj się.</a>
+      <% end %>
     </header>
     <section>
       <% if flash[:error] %>

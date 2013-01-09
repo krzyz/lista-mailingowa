@@ -14,6 +14,10 @@ class Index < Sinatra::Base
   helpers do
 
     def login?
+      if Admin.first.nil?
+        flash[:notice] = "Nie ma hasła do konta administratora! Zmień natychmiast!"
+        return true
+      end
       if session[:username].nil?
         return false
       else
@@ -89,10 +93,20 @@ class Index < Sinatra::Base
 
   get '/admin' do
     redirect '/login' unless login?
-    erb :admin, locals: { users: UserEmail.all }
+    erb :admin
   end
 
-  post '/admin' do
+  get '/admin/lista' do
+    redirect '/login' unless login?
+    erb :lista, locals: { users: UserEmail.all }
+  end
+
+  get '/admin/haslo' do
+    redirect '/login' unless login?
+    erb :haslo
+  end
+
+  post '/admin/haslo' do
     redirect '/login' unless login?
     success = new_password( params[:password] )
     if success == true
