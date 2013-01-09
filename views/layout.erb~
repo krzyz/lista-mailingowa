@@ -15,8 +15,8 @@
             <li><a href="/admin/haslo">Zmień hasło!!</a></li>
             <li><a href="/admin/lista">Lista zapisanych!!!</a></li>
           </ul>
+          <span class="userinfo">Jesteś zalogowany jako admin. <a href="/logout">Wyloguj się.</a></span>
         </nav>
-        Jesteś zalogowany jako admin. <a href="/logout">Wyloguj się.</a>
       <% end %>
     </header>
     <section>

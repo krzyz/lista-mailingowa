@@ -4,6 +4,7 @@ require 'sinatra'
 require 'data_mapper'
 require 'bcrypt'
 require 'rack-flash'
+require 'net/smtp'
 
 
 
@@ -45,6 +46,25 @@ class Index < Sinatra::Base
       end
 
       return success # true if success, false otherwise
+    end
+
+    def send_message(subject, message, password)
+      emails = UserEmail.all.collect { |res| res[:email] }
+      flash[:notice] = emails
+
+
+      message_string = %Q{From: "Naukowe Koło Fizyków(nie!)" <arkendil@gmail.com>
+      To:
+      Subject: #{subject}
+
+      #{message}
+      }
+
+      smtp = Net::SMTP.new 'smtp.gmail.com', 587
+      smtp.enable_starttls
+      smtp.start('gmail.com', 'arkendil@gmail.com', password, :login) do
+        smtp.send_message(message_string, 'arkendil@gmail.com', *emails)
+      end
     end
 
   end
@@ -94,6 +114,12 @@ class Index < Sinatra::Base
   get '/admin' do
     redirect '/login' unless login?
     erb :admin
+  end
+
+  post '/admin' do
+    redirect '/login' unless login?
+    send_message(params[:subject], params[:message], params[:password])
+    redirect back
   end
 
   get '/admin/lista' do

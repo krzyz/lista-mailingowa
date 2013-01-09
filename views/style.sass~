@@ -34,11 +34,24 @@ form
     clear: both
     font:
       weight: bold
-    width: 88px
-    height: 26px
     background: #666666
     color: #FFFFFF
     +gradient-bg($blue0, $blue)
+
+form.niceform
+  width: 550px
+  margin: auto
+  label
+    float: left
+    text-align: left
+    width: 60px
+  input, textarea
+    width: 450px
+    margin-bottom: 20px
+  textarea
+    height: 200px
+  button
+    clear: both
 
 h1
   color: $blue
@@ -56,15 +69,22 @@ table
 tr, th, td
   padding: 0.3em
 
-ul, li
-  display: inline
 
 nav
-  width: 100%
+  margin-bottom: 80px
+  ul
+    float: left
+    padding: 0
+  ul, li
+    display: inline
+
+.userinfo
+  float: right
+  font-size: x-small
 
 li
-  padding: 0.1em
   a
+    padding: 0.2em
     background: $blue
     color: white
     text-decoration: none
@@ -72,3 +92,9 @@ li
     background: white
     color: $blue
 
+a
+  color: $blue
+  text-decoration: none
+
+section
+  clear: both

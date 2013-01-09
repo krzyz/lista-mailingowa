@@ -1,23 +1,9 @@
-<p>
-<form method="post">
-  <label>Nowe hasło:</label>
-  <input type="password" id="password_form" name="password" required>
-  <button type="submit">Zmień</button>
+<form class="niceform" method="post">
+  <label>Temat:</label>
+  <input id="textareasub" value="Newsletter NKF <%= Time.now.strftime("%d.%m.%Y") %>" name="subject"></input>
+  <label>Treść:</label>
+  <textarea id="textareames" name="message"></textarea>
+  <label>Hasło:</label>
+  <input type="password" id="passwordinput" name="password" />
+  <button type="submit">Wyślij Newsletter</button>
 </form>
-</p>
-<p>
-<table border="1">
-  <tr>
-    <th>Nr</th>
-    <th>E-mail</th>
-    <th>Zapisany:</th>
-  </tr>
-  <% users.each do |user| %>
-  <tr>
-    <td><%= user[:id] %></td>
-    <td><%= user[:email] %></td>
-    <td><%= user[:created_at] %></td>
-  </tr>
-  <% end %>
-</table>
-</p>
