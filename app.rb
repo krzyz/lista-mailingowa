@@ -51,20 +51,31 @@ class Index < Sinatra::Base
     def send_message(subject, message, password)
       emails = UserEmail.all.collect { |res| res[:email] }
       flash[:notice] = emails
-
-
-      message_string = %Q{From: "Naukowe Koło Fizyków(nie!)" <arkendil@gmail.com>
-      To:
-      Subject: #{subject}
-
-      #{message}
-      }
-
+      
       smtp = Net::SMTP.new 'smtp.gmail.com', 587
       smtp.enable_starttls
       smtp.start('gmail.com', 'arkendil@gmail.com', password, :login) do
-        smtp.send_message(message_string, 'arkendil@gmail.com', *emails)
+        message_string = ''
+        for email in emails
+          message_string = %Q{From: "Naukowe Koło Fizyków" <arkendil@gmail.com>
+MIME-Version: 1.0
+Content-type: text/html
+Subject: #{subject}
+Date: #{Time.now}
+
+#{message}
+
+<br />
+<br />
+
+<small>W celu usunięcia subskrypcji, należy kliknąć <a href="localhost:4567/unsubscribe/#{email}">tutaj</a>.</small>
+}
+        end
+
+        smtp.send_message(message_string, 'arkendil@gmail.com', email)
       end
+
+      flash[:notice] = "Wiadomość została pomyślnie wysłana."
     end
 
   end
@@ -78,7 +89,7 @@ class Index < Sinatra::Base
     include DataMapper::Resource
 
     property :id,         Serial
-    property :email,      String,  required: true
+    property :email,      String,  required: true, unique: true
     property :created_at, DateTime
   end
 
@@ -99,6 +110,10 @@ class Index < Sinatra::Base
     sass :style
   end
 
+  get %r{(/.*[^\/])$} do
+    redirect "#{params[:captures].first}/"
+  end
+
   get '/' do
     erb :index
   end
@@ -111,29 +126,41 @@ class Index < Sinatra::Base
     redirect '/'
   end
 
-  get '/admin' do
+  get '/unsubscribe/*/' do
+    email = params[:splat].first
+    db_email = UserEmail.first(email: email)
+    if db_email.destroy == true
+      flash[:notice] = "Pomyślnie usunięto subskrypcję emaila #{email} z listy."
+    else
+      flash[:error] = "Nie udało się usunąć emaila #{email} z listy."
+    end
+    #flash[:notice] = email
+    redirect '/'
+  end
+
+  get '/admin/' do
     redirect '/login' unless login?
     erb :admin
   end
 
-  post '/admin' do
+  post '/admin/' do
     redirect '/login' unless login?
     send_message(params[:subject], params[:message], params[:password])
     redirect back
   end
 
-  get '/admin/lista' do
-    redirect '/login' unless login?
+  get '/admin/lista/' do
+    redirect '/login/' unless login?
     erb :lista, locals: { users: UserEmail.all }
   end
 
-  get '/admin/haslo' do
-    redirect '/login' unless login?
+  get '/admin/haslo/' do
+    redirect '/login/' unless login?
     erb :haslo
   end
 
-  post '/admin/haslo' do
-    redirect '/login' unless login?
+  post '/admin/haslo/' do
+    redirect '/login/' unless login?
     success = new_password( params[:password] )
     if success == true
       flash[:notify] = 'Zmiana hasła zakończona sukcesem.'
@@ -143,21 +170,21 @@ class Index < Sinatra::Base
     redirect back
   end
 
-  get '/login' do
+  get '/login/' do
     erb :login
   end
 
-  post '/login' do
+  post '/login/' do
     user = Admin.first
     if params[:name] == 'admin' && 
         user[:password_hash] == BCrypt::Engine.hash_secret(params[:password], user[:salt])
       session[:username] = "admin"
-      redirect '/admin'
+      redirect '/admin/'
     end
     redirect back
   end
 
-  get '/logout' do
+  get '/logout/' do
     session[:username] = nil
     redirect '/'
   end
