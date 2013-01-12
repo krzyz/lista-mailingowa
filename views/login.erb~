@@ -1,7 +1,0 @@
-<form method="post">
-  <label>Nazwa:</label>
-  <input type="text" id="name_form" name="name" required>
-  <label>Hasło:</label>
-  <input type="password" id="password_form" name="password" required>
-  <button type="submit">zaloguj się</button>
-</form>

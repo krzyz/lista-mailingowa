@@ -1,9 +1,0 @@
-<form class="niceform" method="post">
-  <label>Temat:</label>
-  <input id="textareasub" value="Newsletter NKF <%= Time.now.strftime("%d.%m.%Y") %>" name="subject"></input>
-  <label>Treść:</label>
-  <textarea id="textareames" name="message"></textarea>
-  <label>Hasło:</label>
-  <input type="password" id="passwordinput" name="password" />
-  <button type="submit">Wyślij Newsletter</button>
-</form>
