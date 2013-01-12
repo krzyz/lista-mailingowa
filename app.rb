@@ -52,12 +52,12 @@ class Index < Sinatra::Base
       emails = UserEmail.all.collect { |res| res[:email] }
       flash[:notice] = emails
       
-      smtp = Net::SMTP.new 'smtp.gmail.com', 587
+      smtp = Net::SMTP.new 'mail.uj.edu.pl', 587
       smtp.enable_starttls
-      smtp.start('gmail.com', 'arkendil@gmail.com', password, :login) do
+      smtp.start('uj.edu.pl', 'nkf@uj.edu.pl', password, :login) do
         message_string = ''
         for email in emails
-          message_string = %Q{From: "Naukowe Koło Fizyków" <arkendil@gmail.com>
+          message_string = %Q{From: "Naukowe Koło Fizyków" <nkf@uj.edu.pl>
 MIME-Version: 1.0
 Content-type: text/html
 Subject: #{subject}
@@ -68,11 +68,11 @@ Date: #{Time.now}
 <br />
 <br />
 
-<small>W celu usunięcia subskrypcji, należy kliknąć <a href="localhost:4567/unsubscribe/#{email}">tutaj</a>.</small>
+<small>W celu usunięcia subskrypcji, należy kliknąć <a href="http://druid.if.uj.edu.pl/lista/unsubscribe/#{email}">tutaj</a>.</small>
 }
         end
 
-        smtp.send_message(message_string, 'arkendil@gmail.com', email)
+        smtp.send_message(message_string, 'nkf@uj.edu.pl', email)
       end
 
       flash[:notice] = "Wiadomość została pomyślnie wysłana."
