@@ -6,8 +6,6 @@ require 'bcrypt'
 require 'rack-flash'
 require 'net/smtp'
 
-
-
 class Index < Sinatra::Base
   enable :sessions
   use Rack::Flash, sweep: true
@@ -107,26 +105,23 @@ Date: #{Time.now}
 
   get '/stylesheets/style.css' do
   #  header 'Content-Type' => 'text/css; charset=utf-8'
+    content_type 'text/css', :charset => 'utf-8'
     sass :style
   end
 
-  get %r{(/.*[^\/])$} do
-    redirect "#{params[:captures].first}/"
-  end
-
-  get '/' do
+  get '/?' do
     erb :index
   end
 
-  post '/' do
+  post '/?' do
     UserEmail.create(
       email:      params[:email],
       created_at: Time.now
     )
-    redirect '/'
+    redirect url('/')
   end
 
-  get '/unsubscribe/*/' do
+  get '/unsubscribe/*/?' do
     email = params[:splat].first
     db_email = UserEmail.first(email: email)
     if db_email.destroy == true
@@ -135,32 +130,32 @@ Date: #{Time.now}
       flash[:error] = "Nie udało się usunąć emaila #{email} z listy."
     end
     #flash[:notice] = email
-    redirect '/'
+    redirect url('/')
   end
 
-  get '/admin/' do
-    redirect '/login' unless login?
+  get '/admin/?' do
+    redirect url('/login') unless login?
     erb :admin
   end
 
-  post '/admin/' do
-    redirect '/login' unless login?
+  post '/admin/?' do
+    redirect url('/login') unless login?
     send_message(params[:subject], params[:message], params[:password])
     redirect back
   end
 
-  get '/admin/lista/' do
-    redirect '/login/' unless login?
+  get '/admin/lista/?' do
+    redirect url('/login/') unless login?
     erb :lista, locals: { users: UserEmail.all }
   end
 
-  get '/admin/haslo/' do
-    redirect '/login/' unless login?
+  get '/admin/haslo/?' do
+    redirect url('/login/') unless login?
     erb :haslo
   end
 
-  post '/admin/haslo/' do
-    redirect '/login/' unless login?
+  post '/admin/haslo/?' do
+    redirect url('/login/') unless login?
     success = new_password( params[:password] )
     if success == true
       flash[:notify] = 'Zmiana hasła zakończona sukcesem.'
@@ -170,11 +165,11 @@ Date: #{Time.now}
     redirect back
   end
 
-  get '/login/' do
+  get '/login/?' do
     erb :login
   end
 
-  post '/login/' do
+  post '/login/?' do
     user = Admin.first
     if params[:name] == 'admin' && 
         user[:password_hash] == BCrypt::Engine.hash_secret(params[:password], user[:salt])
@@ -184,9 +179,9 @@ Date: #{Time.now}
     redirect back
   end
 
-  get '/logout/' do
+  get '/logout/?' do
     session[:username] = nil
-    redirect '/'
+    redirect url('/')
   end
 
 end

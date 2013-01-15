@@ -2,8 +2,14 @@
   <label>Temat:</label>
   <input id="textareasub" value="Newsletter NKF <%= Time.now.strftime("%d.%m.%Y") %>" name="subject"></input>
   <label>Treść:</label>
-  <textarea id="textareames" name="message"></textarea>
+  <textarea id="textareames" name="message">
+    
+    <br />===================<br />Naukowe Koło Fizyków Studentów Uniwersytetu Jagiellońskiego<br />Instytut Fizyki<br />pok. -108<br />ul. Reymonta 4<br />31-059 Kraków<br /><a href="http://www.nkf.if.uj.edu.pl/">www.nkf.if.uj.edu.pl</a>
+  </textarea>
   <label>Hasło:</label>
   <input type="password" id="passwordinput" name="password" />
   <button type="submit">Wyślij Newsletter</button>
 </form>
+
+<p>Przypominam: wiadomości są wysyłane jako html, więc trzeba je odpowiednio sformatować (w szególności używać &lt;br /&gt; zamiast nowej linii, &amp;amp; zamiast &amp; itd.)</p>
+<p>Przydatne np.: <a href="http://www.textfixer.com/html/convert-text-html.php">pierwszy lepszy link z google'a<a></p>
